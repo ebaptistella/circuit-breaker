@@ -56,7 +56,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>${dependency.scope}</scope>
 		</dependency>
 
 		<!-- documentação API -->
