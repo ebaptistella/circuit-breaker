@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.github.ebaptistella.circuitbreaker.configuration.FeignConfiguration;
 import com.github.ebaptistella.circuitbreaker.dto.UFDTO;
+import com.github.ebaptistella.circuitbreaker.service.impl.IBGEFallbackServiceImpl;
 
-@FeignClient(name = CLIENT_NAME, url = CLIENT_URL, configuration = FeignConfiguration.class)
+@FeignClient(name = CLIENT_NAME, url = CLIENT_URL, configuration = FeignConfiguration.class, fallbackFactory = IBGEFallbackServiceImpl.class)
 public interface IBGEClient {
 
     @GetMapping(value = URL_REQUEST_ALL_STATES, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
