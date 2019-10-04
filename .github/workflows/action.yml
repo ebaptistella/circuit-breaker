@@ -13,5 +13,17 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven
-      run: mvn --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Duser.timezone=America/Sao_Paulo -Duser.language=pt -Duser.region=BR -Duser.country=BR package --file pom.xml
+    - name: Compile
+      env:
+        MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Duser.timezone=America/Sao_Paulo -Duser.language=pt -Duser.region=BR -Duser.country=BR "
+        MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
+      run: |
+        mvn $MAVEN_CLI_OPTS versions:set -DremoveSnapshot --file pom.xml
+        mvn $MAVEN_CLI_OPTS clean compile -Pproduction -Dmaven.test.skip=true --file pom.xml
+    - name: Test
+      env:
+        MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Duser.timezone=America/Sao_Paulo -Duser.language=pt -Duser.region=BR -Duser.country=BR "
+        MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
+      run: |
+        mvn $MAVEN_CLI_OPTS versions:set -DremoveSnapshot --file pom.xml
+        mvn $MAVEN_CLI_OPTS clean test -Dmaven.test.skip=true --file pom.xml
