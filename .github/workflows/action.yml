@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn package --file pom.xml
+      run: mvn --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Duser.timezone=America/Sao_Paulo -Duser.language=pt -Duser.region=BR -Duser.country=BR package --file pom.xml
