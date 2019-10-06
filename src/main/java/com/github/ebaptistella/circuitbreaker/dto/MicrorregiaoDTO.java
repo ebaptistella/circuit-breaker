@@ -22,5 +22,5 @@ public class MicrorregiaoDTO implements Serializable {
     private String nome;
 
     @ApiModelProperty(notes = "Mesorregião que a microrregião pertence")
-    private MesorregiaoDTO mesorregiaoDTO;
+    private MesorregiaoDTO mesorregiao;
 }

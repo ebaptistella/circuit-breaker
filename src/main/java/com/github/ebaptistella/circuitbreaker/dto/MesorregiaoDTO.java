@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,5 +24,6 @@ public class MesorregiaoDTO implements Serializable {
     private String nome;
 
     @ApiModelProperty(notes = "Estado que a mesorregiões pertence")
+    @JsonProperty("UF")
     private UFDTO uf;
 }
