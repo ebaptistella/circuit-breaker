@@ -13,12 +13,13 @@ public final class AuthenticationManagerBuilderUtil {
     private final AuthenticationManagerBuilder auth;
 
     public AuthenticationManagerBuilderUtil(AuthenticationManagerBuilder auth) {
-        this.auth = auth;
+	this.auth = auth;
     }
 
     public void builder() throws Exception {
-        this.auth.inMemoryAuthentication().withUser(SECURITY_USER_1).password(SECURITY_PASS_NOOP + SECURITY_PASS_USER_1).roles("USER").and()
-                .withUser(SECURITY_ADMIN_1).password(SECURITY_PASS_NOOP + SECURITY_PASS_ADMIN_1).roles("USER", "ADMIN", "ACTUATOR");
+	this.auth.inMemoryAuthentication().withUser(SECURITY_USER_1).password(SECURITY_PASS_NOOP + SECURITY_PASS_USER_1)
+		.roles("USER").and().withUser(SECURITY_ADMIN_1).password(SECURITY_PASS_NOOP + SECURITY_PASS_ADMIN_1)
+		.roles("USER", "ADMIN", "ACTUATOR");
     }
 
 }

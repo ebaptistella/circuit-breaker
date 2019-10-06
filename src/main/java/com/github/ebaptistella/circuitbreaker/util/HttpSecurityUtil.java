@@ -12,23 +12,23 @@ public class HttpSecurityUtil {
     private final HttpSecurity http;
 
     public HttpSecurityUtil(HttpSecurity http) {
-        this.http = http;
+	this.http = http;
     }
 
     public void builder() throws Exception {
-        this.http.cors().configurationSource(this.corsBuilder()).and().httpBasic().and().authorizeRequests().antMatchers("/**").hasRole("USER").and()
-                .csrf().disable().headers().frameOptions().disable();
+	this.http.cors().configurationSource(this.corsBuilder()).and().httpBasic().and().authorizeRequests()
+		.antMatchers("/**").hasRole("USER").and().csrf().disable().headers().frameOptions().disable();
     }
 
     private CorsConfigurationSource corsBuilder() {
-        CorsConfiguration cors = new CorsConfiguration().applyPermitDefaultValues();
-        cors.setAllowedMethods(Arrays.asList(HttpMethod.POST.toString(), HttpMethod.DELETE.toString(), HttpMethod.GET.toString(),
-                HttpMethod.PATCH.toString(), HttpMethod.PUT.toString()));
-        cors.setMaxAge(3600L);
+	CorsConfiguration cors = new CorsConfiguration().applyPermitDefaultValues();
+	cors.setAllowedMethods(Arrays.asList(HttpMethod.POST.toString(), HttpMethod.DELETE.toString(),
+		HttpMethod.GET.toString(), HttpMethod.PATCH.toString(), HttpMethod.PUT.toString()));
+	cors.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cors);
-        return source;
+	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	source.registerCorsConfiguration("/**", cors);
+	return source;
     }
 
 }

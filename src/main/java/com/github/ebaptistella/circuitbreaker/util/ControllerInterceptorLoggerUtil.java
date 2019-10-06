@@ -14,12 +14,12 @@ public class ControllerInterceptorLoggerUtil {
 
     @Before("execution(public * com.github.ebaptistella.circuitbreaker..*Controller.*(..))")
     public void logBeforeRestCall(JoinPoint pjp) {
-        log.trace("==>ControllerInterceptorLogger: Executando o método {}", pjp);
+	log.trace("==>ControllerInterceptorLogger: Executando o método {}", pjp);
     }
 
     @After("execution(public * com.github.ebaptistella.circuitbreaker..*Controller.*(..))")
     public void logAfterRestCall(JoinPoint pjp) {
-        log.trace("==>ControllerInterceptorLogger: Saindo do método: {}", pjp);
+	log.trace("==>ControllerInterceptorLogger: Saindo do método: {}", pjp);
     }
 
 }

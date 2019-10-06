@@ -13,10 +13,12 @@ public class CircuitBreakerAPIConstants {
     public static final String STATUS_CODE_404 = "Não encontrado (Not Found).";
     public static final String STATUS_CODE_500 = "Erro interno (Internal Server Error).";
 
-    public static final String STATE_REQUEST_MAPPING = "state";
-    public static final String CITY_REQUEST_MAPPING = "city";
+    public static final String STATE_REQUEST_MAPPING = "api/state";
+    public static final String CITY_REQUEST_MAPPING = "api/city";
 
     public static final String PRM_CITY_NAME = "cityName";
+    public static final String PRM_STATE_CODE = "stateCode";
+    public static final String PRM_UF = "UF";
 
     private CircuitBreakerAPIConstants() {
     }

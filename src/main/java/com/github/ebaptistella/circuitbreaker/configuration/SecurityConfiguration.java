@@ -15,12 +15,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        new AuthenticationManagerBuilderUtil(auth).builder();
+	new AuthenticationManagerBuilderUtil(auth).builder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        new HttpSecurityUtil(http).builder();
+	new HttpSecurityUtil(http).builder();
     }
 
 }

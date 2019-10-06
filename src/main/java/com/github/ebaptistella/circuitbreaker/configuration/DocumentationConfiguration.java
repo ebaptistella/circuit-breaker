@@ -9,8 +9,8 @@ import java.util.Arrays;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import com.github.ebaptistella.circuitbreaker.util.SwaggerConfigurationUtil;
 
@@ -20,7 +20,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Component
+@Configuration
 @EnableSwagger2
 public class DocumentationConfiguration {
 
@@ -31,11 +31,12 @@ public class DocumentationConfiguration {
     @Lazy
     public Docket swaggerConfiguration() {
 
-        return new SwaggerConfigurationUtil(PKG_API,
-                new ApiInfo("REST API - Circuit Breaker", "Documentação da API", this.version, "Terms of service",
-                        new Contact("Eurides Baptistella", "https://github.com/ebaptistella/circuit-breaker", "eurides.baptistella@gmail.com"),
-                        Strings.EMPTY, Strings.EMPTY, new ArrayList<>())).produces().groupName("Circuit Breaker")
-                                .securitySchemes(Arrays.asList(new BasicAuth(BASIC_AUTH)));
+	return new SwaggerConfigurationUtil(PKG_API,
+		new ApiInfo("REST API - Circuit Breaker", "Documentação da API", this.version, "Terms of service",
+			new Contact("Eurides Baptistella", "https://github.com/ebaptistella/circuit-breaker",
+				"eurides.baptistella@gmail.com"),
+			Strings.EMPTY, Strings.EMPTY, new ArrayList<>())).produces().groupName("Circuit Breaker")
+				.securitySchemes(Arrays.asList(new BasicAuth(BASIC_AUTH)));
     }
 
 }

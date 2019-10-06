@@ -2,17 +2,15 @@ package com.github.ebaptistella.circuitbreaker.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.github.ebaptistella.circuitbreaker.util.ServiceInterceptorLoggerUtil;
 
 @Configuration
-@EnableAspectJAutoProxy
 public class InterceptorServiceConfiguration {
 
     @Bean
     public ServiceInterceptorLoggerUtil serviceInterceptor() {
-        return new ServiceInterceptorLoggerUtil();
+	return new ServiceInterceptorLoggerUtil();
     }
 
 }

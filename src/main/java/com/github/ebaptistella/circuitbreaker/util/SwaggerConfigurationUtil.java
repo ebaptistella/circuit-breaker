@@ -22,37 +22,36 @@ public class SwaggerConfigurationUtil {
     private String paramPackageRest;
 
     public SwaggerConfigurationUtil(String packageRest, ApiInfo apiInfo) {
-        super();
+	super();
 
-        this.paramApiInfo = apiInfo;
-        this.paramPackageRest = packageRest;
+	this.paramApiInfo = apiInfo;
+	this.paramPackageRest = packageRest;
     }
 
     public Docket produces() {
-        List<Parameter> operationParameters = new ArrayList<>();
-        operationParameters.add(new ParameterBuilder().name("Content-Type").description("Content-Type").defaultValue(MediaType.APPLICATION_JSON_VALUE)
-                .modelRef(new ModelRef("string")).parameterType("header").required(true).build());
+	List<Parameter> operationParameters = new ArrayList<>();
+	operationParameters.add(new ParameterBuilder().name("Content-Type").description("Content-Type")
+		.defaultValue(MediaType.APPLICATION_JSON_VALUE).modelRef(new ModelRef("string")).parameterType("header")
+		.required(true).build());
 
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(this.paramApiInfo).select()
-                .apis(RequestHandlerSelectors.basePackage(this.paramPackageRest)).paths(PathSelectors.any()).build()
-                .enableUrlTemplating(Boolean.FALSE).produces(getAllProduceContentTypes()).consumes(getAllConsumeContentTypes())
-                .globalOperationParameters(operationParameters);
+	return new Docket(DocumentationType.SWAGGER_2).apiInfo(this.paramApiInfo).select()
+		.apis(RequestHandlerSelectors.basePackage(this.paramPackageRest)).paths(PathSelectors.any()).build()
+		.enableUrlTemplating(Boolean.FALSE).produces(getAllProduceContentTypes())
+		.consumes(getAllConsumeContentTypes()).globalOperationParameters(operationParameters);
     }
 
     private Set<String> getAllConsumeContentTypes() {
-        Set<String> consumes = new HashSet<>();
+	Set<String> consumes = new HashSet<>();
 
-        consumes.add(MediaType.APPLICATION_JSON_VALUE);
-        consumes.add(MediaType.APPLICATION_XML_VALUE);
-        return consumes;
+	consumes.add(MediaType.APPLICATION_JSON_VALUE);
+	return consumes;
     }
 
     private Set<String> getAllProduceContentTypes() {
-        Set<String> produces = new HashSet<>();
+	Set<String> produces = new HashSet<>();
 
-        produces.add(MediaType.APPLICATION_JSON_VALUE);
-        produces.add(MediaType.APPLICATION_XML_VALUE);
-        return produces;
+	produces.add(MediaType.APPLICATION_JSON_VALUE);
+	return produces;
     }
 
 }

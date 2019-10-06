@@ -14,12 +14,12 @@ public class ServiceInterceptorLoggerUtil {
 
     @Before("execution(public * com.github.ebaptistella.circuitbreaker..*Service.*(..))")
     public void logBeforeRestCall(JoinPoint pjp) {
-        log.trace("==>ServiceInterceptorLogger: Executando o método: {}", pjp);
+	log.trace("==>ServiceInterceptorLogger: Executando o método: {}", pjp);
     }
 
     @After("execution(public * com.github.ebaptistella.circuitbreaker..*Service.*(..))")
     public void logAfterRestCall(JoinPoint pjp) {
-        log.trace("==>ServiceInterceptorLogger: Saindo do método: {} ", pjp);
+	log.trace("==>ServiceInterceptorLogger: Saindo do método: {} ", pjp);
     }
 
 }
