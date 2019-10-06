@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.github.ebaptistella.circuitbreaker.configuration.FeignConfiguration;
-import com.github.ebaptistella.circuitbreaker.dto.MunicipioDTO;
+import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
 import com.github.ebaptistella.circuitbreaker.service.impl.IBGECityFallbackServiceImpl;
 
 @FeignClient(name = CITY_CLIENT_NAME, url = CLIENT_URL, configuration = FeignConfiguration.class, fallback = IBGECityFallbackServiceImpl.class)
 public interface IBGECityClient {
 
     @GetMapping(value = URL_REQUEST_CITY_BY_STATE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public abstract List<MunicipioDTO> findByState(@PathVariable(value = PRM_UF, required = true) String uf);
+    public abstract List<MunicipioRetornoDTO> findByState(@PathVariable(value = PRM_UF, required = true) String uf);
 
     @GetMapping(value = URL_REQUEST_ALL_CITIES, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public abstract List<MunicipioDTO> getAll();
+    public abstract List<MunicipioRetornoDTO> getAll();
 
 }

@@ -6,8 +6,6 @@ import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPI
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.ebaptistella.circuitbreaker.api.CityController;
-import com.github.ebaptistella.circuitbreaker.dto.MunicipioDTO;
+import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
 import com.github.ebaptistella.circuitbreaker.service.CityService;
 
 @RestController
@@ -30,15 +28,13 @@ public class CityControllerImpl implements CityController {
     private ApplicationContext context;
 
     @Override
-    public ResponseEntity<List<MunicipioDTO>> getAll() {
-	printCache("city");
+    public ResponseEntity<List<MunicipioRetornoDTO>> getAll() {
 	return ResponseEntity.ok(cityService.getAll());
     }
 
     @Override
-    public ResponseEntity<List<MunicipioDTO>> findByState(
+    public ResponseEntity<List<MunicipioRetornoDTO>> findByState(
 	    @PathVariable(value = PRM_STATE_CODE, required = true) String stateCode) {
-	printCache("city");
 	return ResponseEntity.ok(cityService.findByState(stateCode));
     }
 
@@ -49,14 +45,7 @@ public class CityControllerImpl implements CityController {
 
     @Override
     public ResponseEntity<Void> clearCache() {
-	cityService.clearCache();
 	return ResponseEntity.ok().build();
-    }
-
-    private void printCache(String cache) {
-	CacheManager cm = context.getBean(CacheManager.class);
-	Cache oCache = cm.getCache(cache);
-	System.out.println(oCache.getNativeCache());
     }
 
 }

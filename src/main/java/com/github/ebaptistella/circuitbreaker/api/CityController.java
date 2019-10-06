@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.github.ebaptistella.circuitbreaker.dto.MunicipioDTO;
+import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,21 +34,21 @@ import io.swagger.annotations.Authorization;
 	APPLICATION_JSON_VALUE })
 public interface CityController {
 
-    @ApiOperation(value = "Adquirir lista de todas as cidades do Brasil", response = MunicipioDTO.class, authorizations = {
+    @ApiOperation(value = "Adquirir lista de todas as cidades do Brasil", response = MunicipioRetornoDTO.class, authorizations = {
 	    @Authorization(value = BASIC_AUTH) })
     @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping
-    public abstract ResponseEntity<List<MunicipioDTO>> getAll();
+    public abstract ResponseEntity<List<MunicipioRetornoDTO>> getAll();
 
-    @ApiOperation(value = "Adquirir lista de todas as cidades de um estado do Brasil", response = MunicipioDTO.class, authorizations = {
+    @ApiOperation(value = "Adquirir lista de todas as cidades de um estado do Brasil", response = MunicipioRetornoDTO.class, authorizations = {
 	    @Authorization(value = BASIC_AUTH) })
     @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping("uf/{stateCode}")
-    public abstract ResponseEntity<List<MunicipioDTO>> findByState(
+    public abstract ResponseEntity<List<MunicipioRetornoDTO>> findByState(
 	    @ApiParam(value = PRM_STATE_CODE, required = true) String stateCode);
 
     @ApiOperation(value = "Adquirir lista de cidades do Brasil filtrando por nome", response = Long.class, authorizations = {

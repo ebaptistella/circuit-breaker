@@ -11,6 +11,7 @@ public class CircuitBreakerAPIConstants {
     public static final String STATUS_CODE_401 = "Sem permissão (Unauthorized).";
     public static final String STATUS_CODE_403 = "Proibido (Forbidden).";
     public static final String STATUS_CODE_404 = "Não encontrado (Not Found).";
+    public static final String STATUS_CODE_406 = "Não aceito (Not Acceptable).";
     public static final String STATUS_CODE_500 = "Erro interno (Internal Server Error).";
 
     public static final String STATE_REQUEST_MAPPING = "api/state";

@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.github.ebaptistella.circuitbreaker.dto.MunicipioDTO;
+import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGECityClient;
 import com.github.ebaptistella.circuitbreaker.service.CityService;
 
@@ -24,26 +24,26 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Cacheable(unless = "#result == null or #result.size() == 0")
-    public List<MunicipioDTO> getAll() {
+    public List<MunicipioRetornoDTO> getAll() {
 	return cityClient.getAll();
     }
 
     @Override
     @Cacheable(key = "#stateCode", unless = "#result == null or #result.size() == 0")
-    public List<MunicipioDTO> findByState(String stateCode) {
+    public List<MunicipioRetornoDTO> findByState(String stateCode) {
 	return cityClient.findByState(stateCode);
     }
 
     @Override
     @Cacheable(key = "#cityName", unless = "#result == null")
     public Long findByName(String cityName) {
-	List<MunicipioDTO> municipioList = this.getAll();
+	List<MunicipioRetornoDTO> municipioList = cityClient.getAll();
 
-	Optional<MunicipioDTO> municipioDTO = municipioList.parallelStream()
-		.filter(municipio -> cityName.equals(municipio.getNome())).findFirst();
+	Optional<MunicipioRetornoDTO> municipioDTO = municipioList.parallelStream()
+		.filter(municipio -> cityName.equals(municipio.getNomeCidade())).findFirst();
 
 	if (municipioDTO.isPresent()) {
-	    return municipioDTO.get().getId();
+	    return municipioDTO.get().getCodigoCidade();
 	}
 
 	return null;

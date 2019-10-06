@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.github.ebaptistella.circuitbreaker.dto.MunicipioDTO;
+import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGECityClient;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 public class IBGECityFallbackServiceImpl implements IBGECityClient {
 
     @Override
-    public List<MunicipioDTO> findByState(String uf) {
+    public List<MunicipioRetornoDTO> findByState(String uf) {
 	log.error("==>Erro ao acessar o webservice: {} path: {}", CLIENT_URL, URL_REQUEST_CITY_BY_STATE);
 	return new ArrayList<>();
     }
 
     @Override
-    public List<MunicipioDTO> getAll() {
+    public List<MunicipioRetornoDTO> getAll() {
 	log.error("==>Erro ao acessar o webservice: {}  path: {}", CLIENT_URL, URL_REQUEST_ALL_CITIES);
 	return new ArrayList<>();
     }
