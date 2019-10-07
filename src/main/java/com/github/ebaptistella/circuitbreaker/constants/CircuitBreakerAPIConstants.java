@@ -14,8 +14,8 @@ public class CircuitBreakerAPIConstants {
     public static final String STATUS_CODE_406 = "Não aceito (Not Acceptable).";
     public static final String STATUS_CODE_500 = "Erro interno (Internal Server Error).";
 
-    public static final String STATE_REQUEST_MAPPING = "api/state";
-    public static final String CITY_REQUEST_MAPPING = "api/city";
+    public static final String STATE_REQUEST_MAPPING = "/api/state";
+    public static final String CITY_REQUEST_MAPPING = "/api/city";
 
     public static final String PRM_CITY_NAME = "cityName";
     public static final String PRM_STATE_CODE = "stateCode";

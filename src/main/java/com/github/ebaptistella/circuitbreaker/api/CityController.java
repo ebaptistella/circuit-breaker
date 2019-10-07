@@ -52,7 +52,7 @@ public interface CityController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
-    @GetMapping("uf/{stateCode}")
+    @GetMapping("/uf/{stateCode}")
     public abstract ResponseEntity<List<MunicipioRetornoDTO>> findByState(
 	    @ApiParam(value = PRM_STATE_CODE, required = true) String stateCode);
 
@@ -61,7 +61,7 @@ public interface CityController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
-    @GetMapping("{cityName}")
+    @GetMapping("/{cityName}")
     public abstract ResponseEntity<Long> findByName(@ApiParam(value = PRM_CITY_NAME, required = true) String cityName);
 
     @ApiOperation(value = "Gera lista de todos os municípios do Brasil no formato especificado", response = Void.class, authorizations = {
@@ -70,7 +70,7 @@ public interface CityController {
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 406, message = STATUS_CODE_406),
 	    @ApiResponse(code = 500, message = STATUS_CODE_500) })
-    @GetMapping(path = "download", produces = APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(path = "/download", produces = APPLICATION_OCTET_STREAM_VALUE)
     public abstract ResponseEntity<Void> download(HttpServletResponse response) throws IOException;
 
     @ApiOperation(value = "Limpar cache de cidades do Brasil", response = Void.class, authorizations = {

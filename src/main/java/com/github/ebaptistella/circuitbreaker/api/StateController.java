@@ -50,7 +50,7 @@ public interface StateController {
 	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
 	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 406, message = STATUS_CODE_406),
 	    @ApiResponse(code = 500, message = STATUS_CODE_500) })
-    @GetMapping(path = "download", produces = APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(path = "/download", produces = APPLICATION_OCTET_STREAM_VALUE)
     public abstract ResponseEntity<Void> download(HttpServletResponse response) throws IOException;
 
     @ApiOperation(value = "Limpar cache de estados do Brasil", response = Void.class, authorizations = {
