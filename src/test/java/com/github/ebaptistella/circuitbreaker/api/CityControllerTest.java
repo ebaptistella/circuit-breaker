@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,119 +50,119 @@ public class CityControllerTest {
 
     @Before
     public void setup() {
-	municipioDTO.setSiglaEstado("SC");
-	municipioDTO.setSiglaEstado("PR");
-	municipioDTO.setSiglaEstado("RS");
+        municipioDTO.setSiglaEstado("SC");
+        municipioDTO.setSiglaEstado("PR");
+        municipioDTO.setSiglaEstado("RS");
     }
 
     @Test
     public void clientError() throws Exception {
-	municipioRetornoDTOList.clear();
-	when(cityService.getAll()).thenReturn(new ArrayList<>());
+        municipioRetornoDTOList.clear();
+        when(cityService.getAll()).thenReturn(new ArrayList<>());
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic("", "")).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().is4xxClientError());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic("", "")).accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE))
+                .andDo(print()).andExpect(status().is4xxClientError());
     }
 
     @Test
     public void getAll_retorno_ok() throws Exception {
-	municipioRetornoDTOList.clear();
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.clear();
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
 
-	when(cityService.getAll()).thenReturn(municipioRetornoDTOList);
+        when(cityService.getAll()).thenReturn(municipioRetornoDTOList);
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
-		.accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print())
-		.andExpect(status().isOk()).andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isNotEmpty());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
     public void getAll_retorno_lista_vazia() throws Exception {
-	municipioRetornoDTOList.clear();
-	when(cityService.getAll()).thenReturn(new ArrayList<>());
+        municipioRetornoDTOList.clear();
+        when(cityService.getAll()).thenReturn(new ArrayList<>());
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
-		.accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print())
-		.andExpect(status().isOk()).andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isEmpty());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty());
     }
 
     @Test
     public void findByState_retorno_lista_vazia() throws Exception {
-	municipioRetornoDTOList.clear();
-	when(cityService.findByState(anyString())).thenReturn(new ArrayList<>());
+        municipioRetornoDTOList.clear();
+        when(cityService.findByState(anyString())).thenReturn(new ArrayList<>());
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "35")
-		.with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
-		.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isEmpty());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "35").with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isEmpty());
     }
 
     @Test
     public void findByState_retorno_ok() throws Exception {
-	municipioRetornoDTOList.clear();
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.clear();
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
 
-	when(cityService.findByState(anyString())).thenReturn(municipioRetornoDTOList);
+        when(cityService.findByState(anyString())).thenReturn(municipioRetornoDTOList);
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "35")
-		.with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
-		.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isNotEmpty());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "35").with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
     public void findByState_retorno_mais_um_estado() throws Exception {
-	municipioRetornoDTOList.clear();
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
-	municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.clear();
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
+        municipioRetornoDTOList.add(municipioDTO);
 
-	when(cityService.findByState(anyString())).thenReturn(municipioRetornoDTOList);
+        when(cityService.findByState(anyString())).thenReturn(municipioRetornoDTOList);
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "33|34")
-		.with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
-		.andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isNotEmpty());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/uf/{stateCode}"), "33|34").with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray()).andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
     public void findByName_retorno_ok() throws Exception {
-	when(cityService.findByName(anyString())).thenReturn(anyLong());
+        when(cityService.findByName(anyString())).thenReturn(anyLong());
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/{cityName}"), "São Miguel do Oeste")
-		.with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
-		.andExpect(jsonPath("$").isNumber());
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/{cityName}"), "São Miguel do Oeste").with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNumber());
     }
 
     @Test
     public void findByName_retorno_nao_encontrado() throws Exception {
-	when(cityService.findByName(anyString())).thenReturn(null);
+        when(cityService.findByName(anyString())).thenReturn(null);
 
-	mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/{cityName}"), "São-Miguel-do-Oeste")
-		.with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
-		.contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
-		.andExpect(content().string(containsString("")));
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/{cityName}"), "São-Miguel-do-Oeste").with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("")));
     }
 
     @Test
     public void clearCache_retorno_ok() throws Exception {
 
-	mockMvc.perform(delete(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
-		.accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andDo(print())
-		.andExpect(status().isOk()).andExpect(content().string(containsString("")));
+        mockMvc.perform(delete(CITY_REQUEST_MAPPING).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1)).accept(APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("")));
     }
 
     @Test
     public void download_retorno_ok() throws Exception {
 
-	mockMvc.perform(
-		get(CITY_REQUEST_MAPPING.concat("/download")).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
-			.accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE))
-		.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("")));
+        when(cityService.generateReportFile()).thenReturn(new InputStream() {
+
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+        });
+
+        mockMvc.perform(get(CITY_REQUEST_MAPPING.concat("/download")).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+                .accept(APPLICATION_JSON_VALUE).contentType(APPLICATION_JSON_VALUE)).andExpect(status().isOk());
     }
 }
