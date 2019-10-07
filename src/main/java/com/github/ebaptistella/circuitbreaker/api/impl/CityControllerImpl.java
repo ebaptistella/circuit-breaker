@@ -3,8 +3,13 @@ package com.github.ebaptistella.circuitbreaker.api.impl;
 import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPIConstants.PRM_CITY_NAME;
 import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPIConstants.PRM_STATE_CODE;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
@@ -45,6 +50,20 @@ public class CityControllerImpl implements CityController {
 
     @Override
     public ResponseEntity<Void> clearCache() {
+	return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> download(HttpServletResponse response) throws IOException {
+	InputStream report = cityService.generateReportFile();
+	IOUtils.copy(report, response.getOutputStream());
+
+	response.addHeader("Content-Disposition", "attachment;filename=city-report.csv");
+	response.setContentType("txt/plain");
+
+	response.flushBuffer();
+	report.close();
+
 	return ResponseEntity.ok().build();
     }
 

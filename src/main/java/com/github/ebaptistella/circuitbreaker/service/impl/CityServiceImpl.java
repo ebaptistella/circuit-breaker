@@ -1,5 +1,9 @@
 package com.github.ebaptistella.circuitbreaker.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +15,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
+import com.github.ebaptistella.circuitbreaker.enumerator.WriteFileToEnum;
+import com.github.ebaptistella.circuitbreaker.factory.WriteToFileFactory;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGECityClient;
 import com.github.ebaptistella.circuitbreaker.service.CityService;
 
@@ -21,6 +27,10 @@ public class CityServiceImpl implements CityService {
     @Lazy
     @Autowired
     private IBGECityClient cityClient;
+
+    @Lazy
+    @Autowired
+    private WriteToFileFactory writeToFileFactory;
 
     @Override
     @Cacheable(unless = "#result == null or #result.size() == 0")
@@ -53,5 +63,13 @@ public class CityServiceImpl implements CityService {
     @CacheEvict(allEntries = true)
     public void clearCache() {
 	return;
+    }
+
+    @Override
+    public InputStream generateReportFile() throws IOException {
+	List<MunicipioRetornoDTO> municipioRetornoDTOList = this.getAll();
+	writeToFileFactory.create(WriteFileToEnum.WF_CSV).write("city-report.csv", municipioRetornoDTOList);
+
+	return new FileInputStream(new File("city-report.csv"));
     }
 }
