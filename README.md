@@ -7,7 +7,7 @@ Implements Circuit Breaker (SpringBoot+SpringCloud => Feign + Hystrix)
 
 This will create a jar file inside target folder, and it can be executed with:
 
-`java -jar -Dspring.profiles.active=production -Dloader.path=../config/cb-custom-production.properties circuit-breaker-0.0.1-SNAPSHOT.jar` 
+`java -jar -Dspring.profiles.active=production -Dspring.config.location=../config/cb-custom-production.properties circuit-breaker-0.0.1-SNAPSHOT.jar` 
 
 
 # API Doc
