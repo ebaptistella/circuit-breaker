@@ -2,6 +2,7 @@ package com.github.ebaptistella.circuitbreaker.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
@@ -17,5 +18,7 @@ public interface CityService {
     public abstract void clearCache();
 
     public abstract InputStream generateReportFile() throws IOException;
+
+    public abstract void generateReportFile2(PrintWriter writer) throws IOException;
 
 }

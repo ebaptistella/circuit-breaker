@@ -4,12 +4,10 @@ import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPI
 import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPIConstants.PRM_STATE_CODE;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
@@ -34,37 +32,34 @@ public class CityControllerImpl implements CityController {
 
     @Override
     public ResponseEntity<List<MunicipioRetornoDTO>> getAll() {
-	return ResponseEntity.ok(cityService.getAll());
+        return ResponseEntity.ok(cityService.getAll());
     }
 
     @Override
-    public ResponseEntity<List<MunicipioRetornoDTO>> findByState(
-	    @PathVariable(value = PRM_STATE_CODE, required = true) String stateCode) {
-	return ResponseEntity.ok(cityService.findByState(stateCode));
+    public ResponseEntity<List<MunicipioRetornoDTO>> findByState(@PathVariable(value = PRM_STATE_CODE, required = true) String stateCode) {
+        return ResponseEntity.ok(cityService.findByState(stateCode));
     }
 
     @Override
     public ResponseEntity<Long> findByName(@PathVariable(value = PRM_CITY_NAME, required = true) String cityName) {
-	return ResponseEntity.ok(cityService.findByName(cityName));
+        return ResponseEntity.ok(cityService.findByName(cityName));
     }
 
     @Override
     public ResponseEntity<Void> clearCache() {
-	return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> download(HttpServletResponse response) throws IOException {
-	InputStream report = cityService.generateReportFile();
-	IOUtils.copy(report, response.getOutputStream());
+    public void download(HttpServletResponse response) throws IOException {
 
-	response.addHeader("Content-Disposition", "attachment;filename=city-report.csv");
-	response.setContentType("txt/plain");
+        response.setCharacterEncoding("ISO-8859-1");
+        response.setHeader("Content-Disposition", "attachment; filename=city-report.csv");
+        response.setContentType("application/octet-stream");
 
-	response.flushBuffer();
-	report.close();
+        cityService.generateReportFile2(response.getWriter());
 
-	return ResponseEntity.ok().build();
+        response.flushBuffer();
     }
 
 }

@@ -1,12 +1,10 @@
 package com.github.ebaptistella.circuitbreaker.api.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +23,25 @@ public class StateControllerImpl implements StateController {
 
     @Override
     public ResponseEntity<List<UFDTO>> getAll() {
-	return ResponseEntity.ok(stateService.getAll());
+        return ResponseEntity.ok(stateService.getAll());
     }
 
     @Override
     public ResponseEntity<Void> clearCache() {
-	stateService.clearCache();
-	return ResponseEntity.ok().build();
+        stateService.clearCache();
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> download(HttpServletResponse response) throws IOException {
+    public void download(HttpServletResponse response) throws IOException {
 
-	InputStream report = stateService.generateReportFile();
-	IOUtils.copy(report, response.getOutputStream());
+        response.setCharacterEncoding("ISO-8859-1");
+        response.setHeader("Content-Disposition", "attachment; filename=state-report.csv");
+        response.setContentType("application/octet-stream");
 
-	response.addHeader("Content-Disposition", "attachment;filename=state-report.csv");
-	response.setContentType("txt/plain");
+        stateService.generateReportFile2(response.getWriter());
 
-	response.flushBuffer();
-	report.close();
-
-	return ResponseEntity.ok().build();
+        response.flushBuffer();
     }
 
 }
