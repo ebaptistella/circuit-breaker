@@ -6,6 +6,7 @@ import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAut
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,8 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +46,9 @@ public class StateControllerTest {
 
     @MockBean
     private StateService stateService;
+
+    @MockBean
+    private HttpServletResponse response;
 
     private List<UFDTO> ufDTOList = new ArrayList<>();
     private UFDTO ufDTO = new UFDTO();
@@ -92,4 +100,17 @@ public class StateControllerTest {
 		.andExpect(status().isOk()).andExpect(content().string(containsString("")));
     }
 
+    @Test
+    public void download() throws Exception {
+	StringWriter stringWriter = new StringWriter();
+	PrintWriter writer = new PrintWriter(stringWriter);
+	writer.write("id,name,age");
+	writer.write("1,Mary,18");
+	when(response.getWriter()).thenReturn(writer);
+
+	mockMvc.perform(
+		get(STATE_REQUEST_MAPPING.concat("/download")).with(httpBasic(SECURITY_USER_1, SECURITY_PASS_USER_1))
+			.accept(APPLICATION_OCTET_STREAM_VALUE).contentType(APPLICATION_JSON_VALUE))
+		.andDo(print());
+    }
 }
