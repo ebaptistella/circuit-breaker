@@ -27,4 +27,4 @@ jobs:
       env:
         MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Duser.timezone=America/Sao_Paulo -Duser.language=pt -Duser.region=BR -Duser.country=BR "
         MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
-      run: mvn $MAVEN_CLI_OPTS clean test -Dmaven.test.skip=true --file pom.xml
+      run: mvn $MAVEN_CLI_OPTS clean test --file pom.xml
