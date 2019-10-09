@@ -1,9 +1,11 @@
 package com.github.ebaptistella.circuitbreaker.output.service;
 
-import java.util.List;
+import java.io.Writer;
 
 public interface WriteFileTo {
 
-    public <T> void write(String file, List<T> list);
+    public void write(String[] text);
+
+    public void setWriter(Writer writer);
 
 }
