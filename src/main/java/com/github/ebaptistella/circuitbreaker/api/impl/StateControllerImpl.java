@@ -23,25 +23,25 @@ public class StateControllerImpl implements StateController {
 
     @Override
     public ResponseEntity<List<UFDTO>> getAll() {
-        return ResponseEntity.ok(stateService.getAll());
+	return ResponseEntity.ok(stateService.getAll());
     }
 
     @Override
     public ResponseEntity<Void> clearCache() {
-        stateService.clearCache();
-        return ResponseEntity.ok().build();
+	stateService.clearCache();
+	return ResponseEntity.ok().build();
     }
 
     @Override
     public void download(HttpServletResponse response) throws IOException {
 
-        response.setCharacterEncoding("ISO-8859-1");
-        response.setHeader("Content-Disposition", "attachment; filename=state-report.csv");
-        response.setContentType("application/octet-stream");
+	response.setCharacterEncoding("ISO-8859-1");
+	response.setHeader("Content-Disposition", "attachment; filename=state-report.csv");
+	response.setContentType("application/octet-stream");
 
-        stateService.generateReportFile2(response.getWriter());
+	stateService.generateReportFile(response.getWriter());
 
-        response.flushBuffer();
+	response.flushBuffer();
     }
 
 }

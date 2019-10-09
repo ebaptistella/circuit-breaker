@@ -32,34 +32,35 @@ public class CityControllerImpl implements CityController {
 
     @Override
     public ResponseEntity<List<MunicipioRetornoDTO>> getAll() {
-        return ResponseEntity.ok(cityService.getAll());
+	return ResponseEntity.ok(cityService.getAll());
     }
 
     @Override
-    public ResponseEntity<List<MunicipioRetornoDTO>> findByState(@PathVariable(value = PRM_STATE_CODE, required = true) String stateCode) {
-        return ResponseEntity.ok(cityService.findByState(stateCode));
+    public ResponseEntity<List<MunicipioRetornoDTO>> findByState(
+	    @PathVariable(value = PRM_STATE_CODE, required = true) String stateCode) {
+	return ResponseEntity.ok(cityService.findByState(stateCode));
     }
 
     @Override
     public ResponseEntity<Long> findByName(@PathVariable(value = PRM_CITY_NAME, required = true) String cityName) {
-        return ResponseEntity.ok(cityService.findByName(cityName));
+	return ResponseEntity.ok(cityService.findByName(cityName));
     }
 
     @Override
     public ResponseEntity<Void> clearCache() {
-        return ResponseEntity.ok().build();
+	return ResponseEntity.ok().build();
     }
 
     @Override
     public void download(HttpServletResponse response) throws IOException {
 
-        response.setCharacterEncoding("ISO-8859-1");
-        response.setHeader("Content-Disposition", "attachment; filename=city-report.csv");
-        response.setContentType("application/octet-stream");
+	response.setCharacterEncoding("ISO-8859-1");
+	response.setHeader("Content-Disposition", "attachment; filename=city-report.csv");
+	response.setContentType("application/octet-stream");
 
-        cityService.generateReportFile2(response.getWriter());
+	cityService.generateReportFile(response.getWriter());
 
-        response.flushBuffer();
+	response.flushBuffer();
     }
 
 }
