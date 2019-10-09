@@ -15,7 +15,6 @@ import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAut
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,45 +34,49 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @Api(tags = { "Endpoint das cidades do Brasil" }, protocols = PROTOCOLO_HTTP)
-@RequestMapping(value = CITY_REQUEST_MAPPING, consumes = { APPLICATION_JSON_VALUE }, produces = { APPLICATION_JSON_VALUE })
+@RequestMapping(value = CITY_REQUEST_MAPPING, consumes = { APPLICATION_JSON_VALUE }, produces = {
+	APPLICATION_JSON_VALUE })
 public interface CityController {
 
     @ApiOperation(value = "Adquirir lista de todas as cidades do Brasil", response = MunicipioRetornoDTO.class, authorizations = {
-            @Authorization(value = BASIC_AUTH) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200), @ApiResponse(code = 401, message = STATUS_CODE_401),
-            @ApiResponse(code = 403, message = STATUS_CODE_403), @ApiResponse(code = 404, message = STATUS_CODE_404),
-            @ApiResponse(code = 500, message = STATUS_CODE_500) })
+	    @Authorization(value = BASIC_AUTH) })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
+	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
+	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping
     public abstract ResponseEntity<List<MunicipioRetornoDTO>> getAll();
 
     @ApiOperation(value = "Adquirir lista de todas as cidades de um estado do Brasil", response = MunicipioRetornoDTO.class, authorizations = {
-            @Authorization(value = BASIC_AUTH) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200), @ApiResponse(code = 401, message = STATUS_CODE_401),
-            @ApiResponse(code = 403, message = STATUS_CODE_403), @ApiResponse(code = 404, message = STATUS_CODE_404),
-            @ApiResponse(code = 500, message = STATUS_CODE_500) })
+	    @Authorization(value = BASIC_AUTH) })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
+	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
+	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping("/uf/{stateCode}")
-    public abstract ResponseEntity<List<MunicipioRetornoDTO>> findByState(@ApiParam(value = PRM_STATE_CODE, required = true) String stateCode);
+    public abstract ResponseEntity<List<MunicipioRetornoDTO>> findByState(
+	    @ApiParam(value = PRM_STATE_CODE, required = true) String stateCode);
 
     @ApiOperation(value = "Adquirir lista de cidades do Brasil filtrando por nome", response = Long.class, authorizations = {
-            @Authorization(value = BASIC_AUTH) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200), @ApiResponse(code = 401, message = STATUS_CODE_401),
-            @ApiResponse(code = 403, message = STATUS_CODE_403), @ApiResponse(code = 404, message = STATUS_CODE_404),
-            @ApiResponse(code = 500, message = STATUS_CODE_500) })
+	    @Authorization(value = BASIC_AUTH) })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
+	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
+	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping("/{cityName}")
     public abstract ResponseEntity<Long> findByName(@ApiParam(value = PRM_CITY_NAME, required = true) String cityName);
 
     @ApiOperation(value = "Gera lista de todos os municípios do Brasil no formato especificado", response = Void.class, authorizations = {
-            @Authorization(value = BASIC_AUTH) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200), @ApiResponse(code = 401, message = STATUS_CODE_401),
-            @ApiResponse(code = 403, message = STATUS_CODE_403), @ApiResponse(code = 404, message = STATUS_CODE_404),
-            @ApiResponse(code = 406, message = STATUS_CODE_406), @ApiResponse(code = 500, message = STATUS_CODE_500) })
+	    @Authorization(value = BASIC_AUTH) })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
+	    @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
+	    @ApiResponse(code = 404, message = STATUS_CODE_404), @ApiResponse(code = 406, message = STATUS_CODE_406),
+	    @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @GetMapping(path = "/download", produces = APPLICATION_OCTET_STREAM_VALUE)
-    public abstract void download(HttpServletResponse response) throws IOException;
+    public abstract void download(HttpServletResponse response) throws Exception;
 
-    @ApiOperation(value = "Limpar cache de cidades do Brasil", response = Void.class, authorizations = { @Authorization(value = BASIC_AUTH) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200), @ApiResponse(code = 204, message = STATUS_CODE_204),
-            @ApiResponse(code = 401, message = STATUS_CODE_401), @ApiResponse(code = 403, message = STATUS_CODE_403),
-            @ApiResponse(code = 500, message = STATUS_CODE_500) })
+    @ApiOperation(value = "Limpar cache de cidades do Brasil", response = Void.class, authorizations = {
+	    @Authorization(value = BASIC_AUTH) })
+    @ApiResponses(value = { @ApiResponse(code = 200, message = STATUS_CODE_200),
+	    @ApiResponse(code = 204, message = STATUS_CODE_204), @ApiResponse(code = 401, message = STATUS_CODE_401),
+	    @ApiResponse(code = 403, message = STATUS_CODE_403), @ApiResponse(code = 500, message = STATUS_CODE_500) })
     @DeleteMapping
     public abstract ResponseEntity<Void> clearCache();
 }

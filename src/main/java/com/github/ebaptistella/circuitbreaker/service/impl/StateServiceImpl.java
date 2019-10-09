@@ -1,14 +1,8 @@
 package com.github.ebaptistella.circuitbreaker.service.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -21,8 +15,9 @@ import com.github.ebaptistella.circuitbreaker.dto.UFDTO;
 import com.github.ebaptistella.circuitbreaker.enumerator.WriteFileToEnum;
 import com.github.ebaptistella.circuitbreaker.factory.WriteToFileFactory;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGEStateClient;
+import com.github.ebaptistella.circuitbreaker.output.service.WriteFileTo;
 import com.github.ebaptistella.circuitbreaker.service.StateService;
-import com.opencsv.CSVWriter;
+import com.github.ebaptistella.circuitbreaker.util.ReflectionUtil;
 
 @Service
 @CacheConfig(cacheNames = "state")
@@ -39,49 +34,32 @@ public class StateServiceImpl implements StateService {
     @Override
     @Cacheable
     public List<UFDTO> getAll() {
-        return stateClient.getAll();
+	return stateClient.getAll();
     }
 
     @Override
     @CacheEvict(allEntries = true)
     public void clearCache() {
-        return;
+	return;
     }
 
     @Override
-    public InputStream generateReportFile() throws IOException {
-        List<UFDTO> ufDTOList = this.getAll();
-        writeToFileFactory.create(WriteFileToEnum.WF_CSV).write("state-report.csv", ufDTOList);
+    public void generateReportFile(PrintWriter printerWriter) throws Exception {
+	List<UFDTO> ufDTOList = this.getAll();
 
-        return new FileInputStream(new File("state-report.csv"));
-    }
+	if (ufDTOList.isEmpty()) {
+	    throw new Exception("Lista de estados encontra-se vazia.");
+	}
 
-    @Override
-    public void generateReportFile2(PrintWriter printerWriter) throws IOException {
+	WriteFileTo csv = writeToFileFactory.create(WriteFileToEnum.WF_CSV, printerWriter);
 
-        List<UFDTO> ufDTOList = this.getAll();
+	String[] excludeFieldNames = new String[] { "serialVersionUID", "regiao" };
+	Field[] fields = ReflectionUtil.getDeclaredFields(UFDTO.class, excludeFieldNames);
 
-        CSVWriter w = new CSVWriter(printerWriter);
+	csv.write(ReflectionUtil.getFieldNames(fields));
 
-        List<String> headerList = this.getHeader(UFDTO.class);
-        String[] headerArray = new String[headerList.size()];
-        headerList.toArray(headerArray);
-
-        w.writeNext(headerList.toArray(headerArray));
-
-        ufDTOList.stream().forEach(uf -> w.writeNext(new String[] { uf.getId().toString(), uf.getNome(), uf.getSigla() }));
-
-        w.flush();
-        w.close();
+	ufDTOList.stream().forEach(uf -> csv.write(ReflectionUtil.getDeclaredFieldsValues(uf, excludeFieldNames)));
 
     }
 
-    private <T> List<String> getHeader(Class<T> clazz) {
-
-        Field[] fields = clazz.getDeclaredFields();
-        List<String> fieldList = Arrays.stream(fields).map(Field::getName).collect(Collectors.toList());
-        fieldList.remove("serialVersionUID");
-
-        return fieldList;
-    }
 }
