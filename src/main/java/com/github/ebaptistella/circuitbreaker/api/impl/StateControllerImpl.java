@@ -1,6 +1,5 @@
 package com.github.ebaptistella.circuitbreaker.api.impl;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +32,7 @@ public class StateControllerImpl implements StateController {
     }
 
     @Override
-    public void download(HttpServletResponse response) throws IOException {
+    public void download(HttpServletResponse response) throws Exception {
 
 	response.setCharacterEncoding("ISO-8859-1");
 	response.setHeader("Content-Disposition", "attachment; filename=state-report.csv");

@@ -1,5 +1,7 @@
 package com.github.ebaptistella.circuitbreaker.factory.impl;
 
+import java.io.Writer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -21,10 +23,10 @@ public class WriteToFileFactoryImpl implements WriteToFileFactory {
     private WriteFileTo writeToCSV;
 
     @Override
-    public WriteFileTo create(WriteFileToEnum writeFile) {
-
+    public WriteFileTo create(WriteFileToEnum writeFile, Writer writer) {
 	switch (writeFile) {
 	case WF_CSV:
+	    this.writeToCSV.setWriter(writer);
 	    return this.writeToCSV;
 
 	default:

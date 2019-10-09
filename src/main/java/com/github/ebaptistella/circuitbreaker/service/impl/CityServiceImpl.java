@@ -1,6 +1,5 @@
 package com.github.ebaptistella.circuitbreaker.service.impl;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -14,8 +13,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.github.ebaptistella.circuitbreaker.dto.MunicipioRetornoDTO;
+import com.github.ebaptistella.circuitbreaker.enumerator.WriteFileToEnum;
 import com.github.ebaptistella.circuitbreaker.factory.WriteToFileFactory;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGECityClient;
+import com.github.ebaptistella.circuitbreaker.output.service.WriteFileTo;
 import com.github.ebaptistella.circuitbreaker.service.CityService;
 import com.github.ebaptistella.circuitbreaker.util.ReflectionUtil;
 
@@ -65,20 +66,23 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void generateReportFile(PrintWriter printerWriter) throws IOException {
+    public void generateReportFile(PrintWriter printerWriter) throws Exception {
 
 	List<MunicipioRetornoDTO> municipioRetornoDTOList = this.getAll();
+
+	if (municipioRetornoDTOList.isEmpty()) {
+	    throw new Exception("Lista de municípios encontra-se vazia.");
+	}
+
+	WriteFileTo csv = writeToFileFactory.create(WriteFileToEnum.WF_CSV, printerWriter);
 
 	String[] excludeFieldNames = new String[] { "serialVersionUID", "codigoCidade" };
 	Field[] fields = ReflectionUtil.getDeclaredFields(MunicipioRetornoDTO.class, excludeFieldNames);
 
-	printerWriter.write(String.join(",", ReflectionUtil.getFieldNames(fields)));
-	printerWriter.write("\n");
+	csv.write(ReflectionUtil.getFieldNames(fields));
 
-	municipioRetornoDTOList.stream().forEach(municipio -> {
-	    printerWriter.write(String.join(",", ReflectionUtil.getDeclaredFieldsValues(municipio, excludeFieldNames)));
-	    printerWriter.write("\n");
-	});
+	municipioRetornoDTOList.stream()
+		.forEach(municipio -> csv.write(ReflectionUtil.getDeclaredFieldsValues(municipio, excludeFieldNames)));
 
     }
 

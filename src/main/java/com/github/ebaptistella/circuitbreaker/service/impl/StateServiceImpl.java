@@ -1,6 +1,5 @@
 package com.github.ebaptistella.circuitbreaker.service.impl;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,8 +12,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.github.ebaptistella.circuitbreaker.dto.UFDTO;
+import com.github.ebaptistella.circuitbreaker.enumerator.WriteFileToEnum;
 import com.github.ebaptistella.circuitbreaker.factory.WriteToFileFactory;
 import com.github.ebaptistella.circuitbreaker.intercomm.IBGEStateClient;
+import com.github.ebaptistella.circuitbreaker.output.service.WriteFileTo;
 import com.github.ebaptistella.circuitbreaker.service.StateService;
 import com.github.ebaptistella.circuitbreaker.util.ReflectionUtil;
 
@@ -43,19 +44,21 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public void generateReportFile(PrintWriter printerWriter) throws IOException {
+    public void generateReportFile(PrintWriter printerWriter) throws Exception {
 	List<UFDTO> ufDTOList = this.getAll();
+
+	if (ufDTOList.isEmpty()) {
+	    throw new Exception("Lista de estados encontra-se vazia.");
+	}
+
+	WriteFileTo csv = writeToFileFactory.create(WriteFileToEnum.WF_CSV, printerWriter);
 
 	String[] excludeFieldNames = new String[] { "serialVersionUID", "regiao" };
 	Field[] fields = ReflectionUtil.getDeclaredFields(UFDTO.class, excludeFieldNames);
 
-	printerWriter.write(String.join(",", ReflectionUtil.getFieldNames(fields)));
-	printerWriter.write("\n");
+	csv.write(ReflectionUtil.getFieldNames(fields));
 
-	ufDTOList.stream().forEach(uf -> {
-	    printerWriter.write(String.join(",", ReflectionUtil.getDeclaredFieldsValues(uf, excludeFieldNames)));
-	    printerWriter.write("\n");
-	});
+	ufDTOList.stream().forEach(uf -> csv.write(ReflectionUtil.getDeclaredFieldsValues(uf, excludeFieldNames)));
 
     }
 

@@ -1,6 +1,5 @@
 package com.github.ebaptistella.circuitbreaker.service;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -16,6 +15,6 @@ public interface CityService {
 
     public abstract void clearCache();
 
-    public abstract void generateReportFile(PrintWriter writer) throws IOException;
+    public abstract void generateReportFile(PrintWriter writer) throws Exception;
 
 }

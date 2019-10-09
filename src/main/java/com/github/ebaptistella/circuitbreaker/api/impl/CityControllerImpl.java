@@ -3,7 +3,6 @@ package com.github.ebaptistella.circuitbreaker.api.impl;
 import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPIConstants.PRM_CITY_NAME;
 import static com.github.ebaptistella.circuitbreaker.constants.CircuitBreakerAPIConstants.PRM_STATE_CODE;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +51,7 @@ public class CityControllerImpl implements CityController {
     }
 
     @Override
-    public void download(HttpServletResponse response) throws IOException {
+    public void download(HttpServletResponse response) throws Exception {
 
 	response.setCharacterEncoding("ISO-8859-1");
 	response.setHeader("Content-Disposition", "attachment; filename=city-report.csv");
