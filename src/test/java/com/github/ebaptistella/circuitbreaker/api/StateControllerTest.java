@@ -29,14 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.github.ebaptistella.circuitbreaker.dto.RegiaoDTO;
 import com.github.ebaptistella.circuitbreaker.dto.UFDTO;
 import com.github.ebaptistella.circuitbreaker.service.StateService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @WebMvcTest(StateController.class)
 @ActiveProfiles("test")
 public class StateControllerTest {
